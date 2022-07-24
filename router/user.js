@@ -3,7 +3,7 @@ const userController = require("../controller/user");
 const router = express.Router();
 const userValidator = require("../validator/user");
 // Authentication 用戶登錄
-router.post("/users/login", userController.login);
+router.post("/users/login", userValidator.login, userController.login);
 
 // Registration 用戶註冊
 router.post("/users", userValidator.register, userController.register);

@@ -28,3 +28,36 @@ exports.register = validate([
             }
         }),
 ]);
+
+exports.login = [
+    validate([
+        body("user.emil").notEmpty().withMessage("email should not be empty"),
+        body("user.password").notEmpty().withMessage("password should not be empty"),
+    ]),
+    // 驗證用戶是否存在
+    validate([
+        body("user.emil").custom(async (email, { req }) => {
+            const user = await User.findOne({ email }).select([
+                "email",
+                "password",
+                "username",
+                "bio",
+                "image",
+            ]);
+
+            if (!user) {
+                return Promise.reject("用户不存在");
+            }
+            // 將數據掛載到請求對像中，後續的中間件也可以直接使用，就不需要重複查詢了
+            req.user = user;
+        }),
+    ]),
+    // 驗證密碼
+    validate([
+        body("user.password").custom(async (password, { req }) => {
+            if (md5(password) !== req.user.password) {
+                return Promise.reject("密碼錯誤");
+            }
+        }),
+    ]),
+];

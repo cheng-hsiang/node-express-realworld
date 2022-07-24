@@ -17,6 +17,8 @@ exports.register = async (req, res, next) => {
         // 處理請求
         const user = new User(req.body.user)
         await user.save()
+        user = user.toJSON();
+        delete user.password;
         res.status(201).json({
             user
         })

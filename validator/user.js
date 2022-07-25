@@ -1,7 +1,7 @@
 const { body } = require("express-validator");
 const validate = require("../middleware/validate");
 const { User } = require("../model");
-
+const md5 = require("../util/md5");
 exports.register = validate([
     // 1. validate role
     body("user.username")
@@ -31,12 +31,12 @@ exports.register = validate([
 
 exports.login = [
     validate([
-        body("user.emil").notEmpty().withMessage("email should not be empty"),
+        body("user.email").notEmpty().withMessage("email should not be empty"),
         body("user.password").notEmpty().withMessage("password should not be empty"),
     ]),
     // 驗證用戶是否存在
     validate([
-        body("user.emil").custom(async (email, { req }) => {
+        body("user.email").custom(async (email, { req }) => {
             const user = await User.findOne({ email }).select([
                 "email",
                 "password",

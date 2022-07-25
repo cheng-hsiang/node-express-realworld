@@ -8,7 +8,7 @@ require('./model')
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded());
+// app.use(express.urlencoded());
 
 const PORT = process.env.PORT || 3000;
 

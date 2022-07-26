@@ -17,10 +17,10 @@ router.get("/:articleId", articleValidator.getArticle, articleController.getArti
 router.post("/", auth, articleValidator.createArticle, articleController.createArticle);
 
 // Update Article
-router.put("/:slug", articleController.updateArticle);
+router.put("/:articleId", auth, articleValidator.updateArticle, articleController.updateArticle);
 
 // Delete Article
-router.delete("/:slug", articleController.deleteArticle);
+router.delete("/:articleId",auth,articleValidator.deleteArticle,articleController.deleteArticle);
 
 // Add Comments to an Article
 router.post("/:slug/comments", articleController.addCommentstoanArticle);
